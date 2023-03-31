@@ -51,7 +51,7 @@ class LogIn : AppCompatActivity() {
                 ).show()
             } else {
                 databaseReference.child("Users").child(name).child("pwd").get().addOnSuccessListener {
-                    //Log.d("A",password+' '+it.value)
+                    Log.d("A",password+' '+it.value)
                     if(password==it.value) {
                         etName.setText("")
                         etPassword.setText("")
@@ -70,7 +70,7 @@ class LogIn : AppCompatActivity() {
                     else{
                         Toast.makeText(
                             applicationContext,
-                            "Wrong username or password!",
+                            "Wrong password!",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
