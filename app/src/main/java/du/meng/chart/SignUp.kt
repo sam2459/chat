@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -26,12 +27,13 @@ class SignUp : AppCompatActivity() {
         val etConfirmPassword:EditText=findViewById(R.id.etConfirmPassword)
         auth = FirebaseAuth.getInstance()
         databaseReference= FirebaseDatabase.getInstance().getReference()
+
+
         btnSignUp.setOnClickListener {
             val userName = etName.text.toString()
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             val confirmPassword = etConfirmPassword.text.toString()
-
             if (TextUtils.isEmpty(userName)){
                 Toast.makeText(applicationContext,"username is required", Toast.LENGTH_SHORT).show()
 
@@ -65,12 +67,16 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun registerUser(userName:String,email:String,password:String) {
-        databaseReference.child("Users").child(userName).child("pwd").setValue(password)
-        databaseReference.child("Users").child(userName).child("email").setValue(email)
+        var z=UserModel()
+        z.name=userName
+        z.pwd=password
+        z.email=email
+        databaseReference.child("Users").child(userName).setValue(z)
+        Local_user.name=userName
         Toast.makeText(applicationContext,"Sign up successfully!", Toast.LENGTH_SHORT).show()
         val intent = Intent(
             this@SignUp,
-            MainActivity::class.java
+            UserView::class.java
         )
         startActivity(intent)
         finish()

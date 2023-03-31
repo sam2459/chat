@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <ImageView
+            android:id="@+id/cardImageflag"
+            android:src="@drawable/ic_user"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <TextView
+            android:id="@+id/cardUserName"
+            android:text="Name"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/cardImageflag"
+            android:layout_toEndOf="@+id/cardImageflag"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+        <TextView
+            android:id="@+id/cardUserInfo"
+            android:text="None"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardUserName"
+            android:layout_alignLeft="@+id/cardUserName"
+            android:layout_alignStart="@+id/cardUserName" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -41,6 +41,9 @@ dependencies {
 
     // Add the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

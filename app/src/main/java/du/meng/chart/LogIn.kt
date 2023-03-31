@@ -60,9 +60,10 @@ class LogIn : AppCompatActivity() {
                             "Log in successful!",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Local_user.name=name
                         val intent = Intent(
                             this@LogIn,
-                            MainActivity::class.java
+                            UserView::class.java
                         )
                         startActivity(intent)
                         finish()
@@ -91,6 +92,7 @@ class LogIn : AppCompatActivity() {
                 this@LogIn,
                 SignUp::class.java
             )
+
             startActivity(intent)
             finish()
         }
