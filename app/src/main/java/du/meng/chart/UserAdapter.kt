@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import java.io.ByteArrayOutputStream
 import java.util.*
-class UserAdapter (val c: Context, var models: ArrayList<UserModel>) :
+class UserAdapter (val c: Context, var models: ArrayList<friend>) :
     RecyclerView.Adapter<UserHolder>() {
     private var onItemClickListener: ItemClickListener? = null
     fun setOnItemClickListener(onItemClickListener: ItemClickListener) {
@@ -32,7 +32,7 @@ class UserAdapter (val c: Context, var models: ArrayList<UserModel>) :
         position: Int
     ) { //bind data to our views
         holder.mUserName.text = models[position].name
-        holder.mUserInfo.text = models[position].email
+        holder.mUserInfo.text = models[position].msg
         //holder.mImageFlag.setImageResource(models[position].image)
         holder.mRelative.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {

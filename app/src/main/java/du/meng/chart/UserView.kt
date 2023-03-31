@@ -1,7 +1,10 @@
 package du.meng.chart
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 
 class UserView : AppCompatActivity() {
-    val users =ArrayList<UserModel>()
+    val users =ArrayList<friend>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,67 +26,77 @@ class UserView : AppCompatActivity() {
         // Set RecyclerView Adapter
         Log.d("Yes",Local_user.name)
 
-        val db = FirebaseDatabase.getInstance().getReference().child("Users")
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d("fire", "onChildAdded:" + dataSnapshot.key!!)
+        val db = FirebaseDatabase.getInstance().getReference().child(Local_user.name).child("Friends")
 
-                // A new comment has been added, add it to the displayed list
-                try {
-                    var comment: UserModel? = dataSnapshot.getValue(UserModel::class.java) ?: return
+        db.addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                    Log.d("fire", "onChildAdded:" + dataSnapshot.key!!)
 
-                    users.add(comment!!)
-                    val myAdapter = UserAdapter(this@UserView, users)
-                    mRecyclerView.setAdapter(myAdapter)
-                    Log.d("fire", comment.name + comment.email)
+                    // A new comment has been added, add it to the displayed list
+                    try {
+                        var comment: friend? = dataSnapshot.getValue(friend::class.java) ?: return
+
+                        users.add(comment!!)
+                        val myAdapter = UserAdapter(this@UserView, users)
+                        mRecyclerView.setAdapter(myAdapter)
+                        Log.d("fire", comment.name + comment.msg)
+                    } catch (e: Exception) {
+                        return
+                    }
                 }
-                catch (e:Exception){
-                    return
+
+                override fun onChildChanged(
+                    dataSnapshot: DataSnapshot,
+                    previousChildName: String?
+                ) {
+                    Log.d("fire", "onChildChanged: ${dataSnapshot.key}")
+
+                    // ...
                 }
-            }
 
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d("fire", "onChildChanged: ${dataSnapshot.key}")
+                override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                    Log.d("fire", "onChildRemoved:" + dataSnapshot.key!!)
 
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so displayed the changed comment.
-                val newComment = dataSnapshot.getValue()
-                val commentKey = dataSnapshot.key
+                    // ...
+                }
 
-                // ...
-            }
+                override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                    Log.d("fire", "onChildMoved:" + dataSnapshot.key!!)
 
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                Log.d("fire", "onChildRemoved:" + dataSnapshot.key!!)
+                    // ...
+                }
 
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so remove it.
-                val commentKey = dataSnapshot.key
-
-                // ...
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d("fire", "onChildMoved:" + dataSnapshot.key!!)
-
-                // A comment has changed position, use the key to determine if we are
-                // displaying this comment and if so move it.
-                val movedComment = dataSnapshot.getValue()
-                val commentKey = dataSnapshot.key
-
-                // ...
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("fire", "postComments:onCancelled", databaseError.toException())
-                Toast.makeText(baseContext, "Failed to load comments.",
-                    Toast.LENGTH_SHORT).show()
-            }
-        }
-        db.addChildEventListener(childEventListener)
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(
+                        baseContext, "Failed to load comments.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
 
 
     }
     // Add Models to arraylist
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu to use in the action bar
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_options, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar menu items
+        when (item.itemId) {
+            R.id.add_friend->{
+                val intent = Intent(this@UserView, AddFriend::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.menu_about -> {
+                Toast.makeText(applicationContext, "About Button Clicked !",
+                    Toast.LENGTH_LONG).show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
